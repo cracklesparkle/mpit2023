@@ -38,6 +38,16 @@ dependencies:
   firebase_core: ^2.8.0
   firebase_storage: ^11.0.16
   firebase_auth: ^4.3.0
+  flutter_svg: ^2.0.4
+  floating_tabbar: ^0.0.7
+  yandex_mapkit: ^3.2.0
+  geolocator: ^9.0.2
+  firebase_database: ^10.0.16
+  cloud_firestore: ^4.4.5
+  supabase_flutter: ^1.5.0
+  latlong2: ^0.8.1
+  map: ^1.4.1
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:

@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 
 import 'main.dart';
 
-class LoginWidget extends StatefulWidget {
-  final VoidCallback onClickedSignUp;
+class SignUpWidget extends StatefulWidget {
+  final Function() onClickedSignIn;
 
-  const LoginWidget({Key? key, required this.onClickedSignUp})
+  const SignUpWidget({Key? key, required this.onClickedSignIn})
       : super(key: key);
+
   @override
-  _LoginWidgetState createState() => _LoginWidgetState();
+  _SignUpWidgetState createState() => _SignUpWidgetState();
 }
 
-class _LoginWidgetState extends State<LoginWidget> {
+class _SignUpWidgetState extends State<SignUpWidget> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final String logoOne = 'logo_one.svg';
@@ -91,10 +92,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25))),
               child: Text(
-                'Войти',
+                'Зарегистрироваться',
                 style: TextStyle(fontSize: 16),
               ),
-              onPressed: signIn,
+              onPressed: signUp,
             ),
             SizedBox(
               height: 20,
@@ -102,15 +103,14 @@ class _LoginWidgetState extends State<LoginWidget> {
             RichText(
                 text: TextSpan(
                     style: TextStyle(color: Colors.black, fontSize: 12),
-                    text: 'Нет аккаунта? ',
+                    text: 'Уже есть аккаунт? ',
                     children: [
                   TextSpan(
                       recognizer: TapGestureRecognizer()
-                        ..onTap = widget.onClickedSignUp,
-                      text: 'Зарегистрироваться',
+                        ..onTap = widget.onClickedSignIn,
+                      text: 'Войти',
                       style: TextStyle(
                           decoration: TextDecoration.underline,
-                          //color: Theme.of(context).colorScheme.onPrimary))
                           color: Colors.green.shade600))
                 ])),
             // ElevatedButton(
@@ -122,13 +122,13 @@ class _LoginWidgetState extends State<LoginWidget> {
             //     'Зарегистрироваться',
             //     style: TextStyle(fontSize: 16),
             //   ),
-            //   onPressed: signIn,
+            //   onPressed: signUp,
             // )
           ],
         ));
   }
 
-  Future signIn() async {
+  Future signUp() async {
     showDialog(
         context: context,
         builder: (context) => Center(
@@ -136,7 +136,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             ),
         barrierDismissible: false);
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
     } on FirebaseAuthException catch (e) {

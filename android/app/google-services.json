@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "664401750325",
+    "firebase_url": "https://mpit-2023-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "mpit-2023",
     "storage_bucket": "mpit-2023.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "664401750325-5pnpai5hocud5gdrnrmogihd58f93dg2.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "664401750325-u4kq3e7lagm9ndg27col4f33vppjdmro.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mpit2023"
+              }
             }
           ]
         }

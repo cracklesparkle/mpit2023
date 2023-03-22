@@ -1,12 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mpit2023/map_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide User;
+import 'auth_page.dart';
 import 'firebase_options.dart';
+import 'nearby_page.dart';
+import 'profile_page.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Supabase.initialize(
+    url: 'https://hubrelozpwhnirdykdqk.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1YnJlbG96cHdobmlyZHlrZHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk1MDM0NTgsImV4cCI6MTk5NTA3OTQ1OH0.wNvYZsDi6NDax4zXl9UIEyVjc8XrgcEUOiGM6vgbojM',
+  );
   runApp(const MyApp());
 }
 
@@ -19,12 +31,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
-      title: 'Flutter Demo',
+      title: 'ТУТиТАМ',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MainPage(title: 'Flutter Demo Home Page'),
+      home: const MainPage(title: 'ТУТиТАМ'),
     );
   }
 }
@@ -50,15 +63,6 @@ class MainPage extends StatefulWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -68,101 +72,105 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
+  int _selectedIndex = 4;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    ShapesPage(),
+    Text(
+      'Поиск',
+      style: optionStyle,
+    ),
+    Nearby(),
+    Text(
+      'События',
+      style: optionStyle,
+    ),
+    Profile()
+  ];
+
+  void _onItemTapped(int index) {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Signed in as',
-            ),
-            Text(
-              // '$_counter',
-              user.email!,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            ElevatedButton.icon(
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                },
-                icon: Icon(
-                  Icons.arrow_back,
-                  size: 32,
-                ),
-                label: Text(
-                  'Sign out',
-                  style: TextStyle(fontSize: 24),
-                ))
-          ],
+        backgroundColor: Colors.white,
+        title: IconButton(
+          icon: Image(image: AssetImage('filter.png')),
+          onPressed: () => {},
         ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.more_vert,
+            color: Colors.green,
+          ),
+          onPressed: () {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text('В разработке')));
+          },
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.search, color: Colors.green),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute<void>(
+                builder: (BuildContext context) {
+                  return Scaffold(
+                    appBar: AppBar(
+                      backgroundColor: Colors.white,
+                      title: const Text('Искать'),
+                    ),
+                    body: const Center(
+                      child: Text(
+                        'Поиск',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  );
+                },
+              ));
+            },
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: Container(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Карта'),
+          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Бонусы'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.navigation), label: 'Ближайшие'),
+          BottomNavigationBarItem(icon: Icon(Icons.event), label: 'События'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle), label: 'Профиль'),
+        ],
+        currentIndex: _selectedIndex,
+        unselectedItemColor: Colors.grey,
+        selectedItemColor: Colors.green[600],
+        onTap: _onItemTapped,
+      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
 
 class _MainPageState extends State<MainPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
       body: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
@@ -171,98 +179,18 @@ class _MainPageState extends State<MainPage> {
                 child: CircularProgressIndicator(),
               );
             } else if (snapshot.hasError) {
-              return Center(child: Text('Something went wrong'));
+              return Center(child: Text('Ой, что-то пошло не так :('));
             } else if (snapshot.hasData) {
               return MyHomePage(title: 'Hello');
             } else {
-              return LoginWidget();
+              return AuthPage();
             }
           }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
-  }
-}
-
-class LoginWidget extends StatefulWidget {
-  @override
-  _LoginWidgetState createState() => _LoginWidgetState();
-}
-
-class _LoginWidgetState extends State<LoginWidget> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 40,
-            ),
-            TextField(
-              controller: emailController,
-              cursorColor: Colors.white,
-              textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: 'Email'),
-              obscureText: false,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextField(
-              controller: passwordController,
-              textInputAction: TextInputAction.done,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.fromHeight(50),
-              ),
-              icon: Icon(Icons.lock_open, size: 32),
-              label: Text(
-                'Sign in',
-                style: TextStyle(fontSize: 24),
-              ),
-              onPressed: signIn,
-            )
-          ],
-        ));
-  }
-
-  Future signIn() async {
-    showDialog(
-        context: context,
-        builder: (context) => Center(
-              child: CircularProgressIndicator(),
-            ),
-        barrierDismissible: false);
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim());
-    } on FirebaseAuthException catch (e) {
-      print(e);
-    }
-
-    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 }
