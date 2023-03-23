@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:filter_list/filter_list.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:floating_tabbar/Models/tab_item.dart';
+import 'package:floating_tabbar/floating_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_stories/flutter_stories.dart';
@@ -209,7 +211,8 @@ class NearbyCard extends StatelessWidget {
                       child: Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: NetworkImage(imagePath),
+                            image: NetworkImage(
+                                'https://hubrelozpwhnirdykdqk.supabase.co/storage/v1/object/public/places/organisation_banner.png'),
                             fit: BoxFit.cover,
                             alignment: Alignment.topCenter,
                           ),
@@ -226,33 +229,26 @@ class NearbyCard extends StatelessWidget {
                             height: 180,
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
-                              child: Row(
+                              child: Wrap(
                                 children: [
                                   Text(
-                                    'АКТИВНЫЙ СЕМЕЙНЫЙ И ЭКСТРЕМАЛЬНЫЙОТДЫХ В ЯКУТИИ Спортивно-развлекательный центр «Техтюр» — все для лучших условий вашего досуга.',
-                                    style: TextStyle(color: Colors.white),
+                                    'АКТИВНЫЙ СЕМЕЙНЫЙ И ЭКСТРЕМАЛЬНЫЙ ОТДЫХ В ЯКУТИИ \nСпортивно-развлекательный центр «Техтюр» \n\n— все для лучших условий вашего досуга.',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Montserrat'),
                                   ),
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 0, 2, 0),
-                                        child: Icon(
-                                          Icons.place_outlined,
-                                          color: Colors.white,
-                                          size: 12,
-                                        ),
-                                      ),
-                                      Text(
-                                        location,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ],
-                                  )
+                                  ListTile(
+                                    title: Text('Галерея'),
+                                  ),
+                                  ListTile(
+                                    title: Text('Отзывы'),
+                                  ),
+                                  ListTile(
+                                    title: Text('О нас'),
+                                  ),
                                 ],
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                                //mainAxisAlignment: MainAxisAlignment.end,
+                                //crossAxisAlignment: CrossAxisAlignment.center,
                               ),
                             )),
                       ),
