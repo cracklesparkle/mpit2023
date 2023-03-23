@@ -94,9 +94,6 @@ class ShapesPageState extends State<ShapesPage> {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Shapes'),
-      ),
       body: MapLayout(
         controller: controller,
         builder: (context, transformer) {
@@ -145,28 +142,28 @@ class ShapesPageState extends State<ShapesPage> {
                     transformer: transformer,
                     polylines: polylines,
                   ),
-                  PositionedDirectional(
-                    top: 24,
-                    start: 24,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.black54,
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                      ),
-                      child: Slider(
-                        value: _polylineOffset,
-                        min: -32,
-                        max: 32,
-                        label: '$_polylineOffset px',
-                        divisions: 64,
-                        onChanged: (v) {
-                          setState(() {
-                            _polylineOffset = v;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
+                  // PositionedDirectional(
+                  //   top: 24,
+                  //   start: 24,
+                  //   child: Container(
+                  //     decoration: const BoxDecoration(
+                  //       color: Colors.black54,
+                  //       borderRadius: BorderRadius.all(Radius.circular(16)),
+                  //     ),
+                  //     child: Slider(
+                  //       value: _polylineOffset,
+                  //       min: -32,
+                  //       max: 32,
+                  //       label: '$_polylineOffset px',
+                  //       divisions: 64,
+                  //       onChanged: (v) {
+                  //         setState(() {
+                  //           _polylineOffset = v;
+                  //         });
+                  //       },
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

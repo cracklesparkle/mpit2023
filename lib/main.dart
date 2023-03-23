@@ -70,9 +70,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  int _selectedIndex = 4;
+  int _selectedIndex = 2;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
@@ -124,6 +122,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 builder: (BuildContext context) {
                   return Scaffold(
                     appBar: AppBar(
+                      leading: IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        color: Colors.green.shade600,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
                       backgroundColor: Colors.white,
                       title: const Text('Искать'),
                     ),
@@ -147,8 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Карта'),
           BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Бонусы'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.navigation), label: 'Ближайшие'),
+          BottomNavigationBarItem(icon: Icon(Icons.navigation), label: 'Рядом'),
           BottomNavigationBarItem(icon: Icon(Icons.event), label: 'События'),
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle), label: 'Профиль'),

@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  carousel_slider:
+    dependency: "direct main"
+    description:
+      name: carousel_slider
+      sha256: "9c695cc963bf1d04a47bd6021f68befce8970bcd61d24938e1fb0918cf5d9c42"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.1"
   characters:
     dependency: transitive
     description:
@@ -169,6 +177,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
+  filter_list:
+    dependency: "direct main"
+    description:
+      name: filter_list
+      sha256: "2d80d6d19beb7847c1176e8bf6fe06d302b23eb7d1bf48c231dd730409ff9b4d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -310,6 +326,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.9"
+  flutter_stories:
+    dependency: "direct main"
+    description:
+      name: flutter_stories
+      sha256: daae6265ec6b63efdd880d775e735a57e37e6154944fcccc973b7474baef27c4
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -318,6 +342,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.4"
+  flutter_tags:
+    dependency: "direct main"
+    description:
+      name: flutter_tags
+      sha256: e958c478aac3e5ac0132d1e9f14a5f0713543edf62c83f801d9815f255036c8e
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.9+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -701,6 +733,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.3"
+  stories_for_flutter:
+    dependency: "direct main"
+    description:
+      name: stories_for_flutter
+      sha256: "542ce21ca5d6a1b0d1549822fd079d055e7c295e96cc1efd39b548affc67029a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   stream_channel:
     dependency: transitive
     description:

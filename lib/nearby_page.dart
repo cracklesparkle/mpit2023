@@ -1,9 +1,21 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:filter_list/filter_list.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_stories/flutter_stories.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:latlong2/latlong.dart';
+
+final List<String> imgList = [
+  'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=195&q=80',
+  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=195&q=80',
+  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=195&q=80',
+  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=195&q=80',
+  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=135&q=80',
+  'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+];
 
 class Nearby extends StatefulWidget {
   const Nearby({super.key});
@@ -16,8 +28,115 @@ class _NearbyState extends State<Nearby> {
   final _future = Supabase.instance.client
       .from('places')
       .select<List<Map<String, dynamic>>>();
+  final _momentCount = 5;
+  final _momentDuration = const Duration(seconds: 5);
   @override
   Widget build(BuildContext context) {
+    final images = List.generate(
+      _momentCount,
+      (idx) => Container(color: Colors.green),
+    );
+
+    return Column(
+      children: [
+        // Container(
+        //     child: CarouselSlider(
+        //   options: CarouselOptions(
+        //     padEnds: false,
+        //     aspectRatio: 2.0,
+        //     enlargeCenterPage: false,
+        //     enableInfiniteScroll: false,
+        //     initialPage: 0,
+        //     autoPlay: false,
+        //   ),
+        //   items: imageSliders,
+        // )),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Chip(
+                label: Text('отдых'),
+                labelStyle: TextStyle(color: Colors.black),
+              ),
+              Chip(
+                label: Text('поесть'),
+                labelStyle: TextStyle(color: Colors.black),
+              ),
+              Chip(
+                label: Text('рыбалка'),
+                labelStyle: TextStyle(color: Colors.black),
+              ),
+              Chip(
+                label: Text('лыжи'),
+                labelStyle: TextStyle(color: Colors.black),
+              ),
+              Chip(
+                label: Text('хайкинг'),
+                labelStyle: TextStyle(color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.blue),
+                ),
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Scaffold(
+                          body: Story(
+                            onFlashForward: Navigator.of(context).pop,
+                            onFlashBack: Navigator.of(context).pop,
+                            momentCount: 5,
+                            momentDurationGetter: (idx) => _momentDuration,
+                            momentBuilder: (context, idx) => images[idx],
+                          ),
+                        );
+                      });
+                },
+              ),
+              Container(
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.yellow),
+              ),
+              Container(
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.green),
+              ),
+              Container(
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15), color: Colors.red),
+              )
+            ],
+          ),
+        ),
+        NearbyPlace()
+      ],
+    );
+  }
+
+  FutureBuilder<List<Map<String, dynamic>>> NearbyPlace() {
     return FutureBuilder<List<Map<String, dynamic>>>(
       future: _future,
       builder: (context, snapshot) {
@@ -26,6 +145,7 @@ class _NearbyState extends State<Nearby> {
         }
         final places = snapshot.data!;
         return ListView.builder(
+          shrinkWrap: true,
           itemCount: places.length,
           itemBuilder: ((context, index) {
             final place = places[index];
@@ -60,56 +180,181 @@ class NearbyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      elevation: 5,
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(imagePath),
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
-          ),
-        ),
-        child: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Color.fromRGBO(0, 0, 0, 0.5), Colors.transparent],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter)),
-            height: 180,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  Text(
-                    name,
-                    style: TextStyle(color: Colors.white),
+    return GestureDetector(
+      onTap: () => {
+        Navigator.push(context, MaterialPageRoute<void>(
+          builder: (BuildContext context) {
+            return Scaffold(
+                appBar: AppBar(
+                  leading: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: Colors.green.shade600,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 2, 0),
-                        child: Icon(
-                          Icons.place_outlined,
-                          color: Colors.white,
-                          size: 12,
+                  backgroundColor: Colors.white,
+                  centerTitle: true,
+                  title: Image.network(
+                      'https://hubrelozpwhnirdykdqk.supabase.co/storage/v1/object/public/places/organisation_logo_01.png'),
+                ),
+                body: Column(
+                  children: [
+                    Card(
+                      margin: const EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      elevation: 5,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(imagePath),
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter,
+                          ),
                         ),
+                        child: Container(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [
+                                  Color.fromRGBO(0, 0, 0, 0.5),
+                                  Colors.transparent
+                                ],
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter)),
+                            height: 180,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'АКТИВНЫЙ СЕМЕЙНЫЙ И ЭКСТРЕМАЛЬНЫЙОТДЫХ В ЯКУТИИ Спортивно-развлекательный центр «Техтюр» — все для лучших условий вашего досуга.',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 2, 0),
+                                        child: Icon(
+                                          Icons.place_outlined,
+                                          color: Colors.white,
+                                          size: 12,
+                                        ),
+                                      ),
+                                      Text(
+                                        location,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                              ),
+                            )),
                       ),
-                      Text(
-                        location,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  )
-                ],
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-              ),
-            )),
+                    ),
+                  ],
+                ));
+          },
+        ))
+      },
+      child: Card(
+        margin: const EdgeInsets.all(10),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 5,
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(imagePath),
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+            ),
+          ),
+          child: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                Color.fromRGBO(0, 0, 0, 0.5),
+                Colors.transparent
+              ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
+              height: 180,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 2, 0),
+                          child: Icon(
+                            Icons.place_outlined,
+                            color: Colors.white,
+                            size: 12,
+                          ),
+                        ),
+                        Text(
+                          location,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                ),
+              )),
+        ),
       ),
     );
   }
 }
+
+final List<Widget> imageSliders = imgList
+    .map((item) => Container(
+          child: Container(
+            margin: EdgeInsets.all(5.0),
+            child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                child: Stack(
+                  children: <Widget>[
+                    Image.network(item, fit: BoxFit.cover, width: 1000.0),
+                    Positioned(
+                      bottom: 0.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color.fromARGB(200, 0, 0, 0),
+                              Color.fromARGB(0, 0, 0, 0)
+                            ],
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                          ),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        child: Text(
+                          'No. ${imgList.indexOf(item)} image',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+          ),
+        ))
+    .toList();

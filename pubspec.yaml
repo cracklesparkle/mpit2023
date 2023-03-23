@@ -48,6 +48,11 @@ dependencies:
   latlong2: ^0.8.1
   map: ^1.4.1
   cached_network_image: ^3.2.3
+  stories_for_flutter: ^1.2.0
+  flutter_tags: ^0.4.9+1
+  filter_list: ^1.0.2
+  carousel_slider: ^4.2.1
+  flutter_stories: ^0.3.1
 
 dev_dependencies:
   flutter_test:
