@@ -40,7 +40,6 @@ dependencies:
   firebase_auth: ^4.3.0
   flutter_svg: ^2.0.4
   floating_tabbar: ^0.0.7
-  yandex_mapkit: ^3.2.0
   geolocator: ^9.0.2
   firebase_database: ^10.0.16
   cloud_firestore: ^4.4.5
@@ -56,6 +55,7 @@ dependencies:
   flutter_rating_stars: ^1.0.3+4
   smooth_star_rating: ^1.1.1
   smooth_star_rating_null_safety: ^1.0.4+2
+  flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
   flutter_test:

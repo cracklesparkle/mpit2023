@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'app_lat_long.dart';
-import 'package:yandex_mapkit/yandex_mapkit.dart';
+//import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import 'location_service.dart';
 
@@ -14,7 +14,7 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  final mapControllerCompleter = Completer<YandexMapController>();
+  //final mapControllerCompleter = Completer<YandexMapController>();
 
   @override
   void initState() {
@@ -28,11 +28,11 @@ class _MapScreenState extends State<MapScreen> {
       appBar: AppBar(
         title: const Text('Текущее местоположение'),
       ),
-      body: YandexMap(
-        onMapCreated: (controller) {
-          mapControllerCompleter.complete(controller);
-        },
-      ),
+      // body: YandexMap(
+      //   onMapCreated: (controller) {
+      //     mapControllerCompleter.complete(controller);
+      //   },
+      // ),
     );
   }
 
@@ -53,24 +53,24 @@ class _MapScreenState extends State<MapScreen> {
     } catch (_) {
       location = defLocation;
     }
-    _moveToCurrentLocation(location);
+    //_moveToCurrentLocation(location);
   }
 
   /// Метод для показа текущей позиции
-  Future<void> _moveToCurrentLocation(
-    AppLatLong appLatLong,
-  ) async {
-    (await mapControllerCompleter.future).moveCamera(
-      animation: const MapAnimation(type: MapAnimationType.linear, duration: 1),
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: Point(
-            latitude: appLatLong.lat,
-            longitude: appLatLong.long,
-          ),
-          zoom: 12,
-        ),
-      ),
-    );
-  }
+  // Future<void> _moveToCurrentLocation(
+  //   AppLatLong appLatLong,
+  // ) async {
+  //   (await mapControllerCompleter.future).moveCamera(
+  //     animation: const MapAnimation(type: MapAnimationType.linear, duration: 1),
+  //     CameraUpdate.newCameraPosition(
+  //       CameraPosition(
+  //         target: Point(
+  //           latitude: appLatLong.lat,
+  //           longitude: appLatLong.long,
+  //         ),
+  //         zoom: 12,
+  //       ),
+  //     ),
+  //   );
+  // }
 }

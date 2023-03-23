@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mpit2023/bonuses_page.dart';
+import 'package:mpit2023/events_page.dart';
 import 'package:mpit2023/map_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 import 'auth_page.dart';
@@ -34,9 +36,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       title: 'ТУТиТАМ',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.green, fontFamily: 'Raleway'),
       home: const MainPage(title: 'ТУТиТАМ'),
     );
   }
@@ -75,15 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     ShapesPage(),
-    Text(
-      'Поиск',
-      style: optionStyle,
-    ),
+    BonusesPage(),
     Nearby(),
-    Text(
-      'События',
-      style: optionStyle,
-    ),
+    EventsPage(),
     Profile()
   ];
 
@@ -99,9 +93,20 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: IconButton(
-          icon: Image(image: AssetImage('filter.png')),
-          onPressed: () => {},
+        title: Container(
+          height: 32,
+          child: TextField(
+            decoration: InputDecoration(
+                labelText: 'поиск',
+                labelStyle: TextStyle(color: Colors.green.shade600),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    borderSide:
+                        BorderSide(color: Colors.green.shade600, width: 0)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25))),
+            obscureText: false,
+          ),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -167,6 +172,42 @@ class _MyHomePageState extends State<MyHomePage> {
       //   tooltip: 'Increment',
       //   child: const Icon(Icons.add),
       // ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class FilterButton extends StatelessWidget {
+  const FilterButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Image(image: AssetImage('filter.png')),
+      onPressed: () => {
+        showModalBottomSheet<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return SizedBox(
+              height: 200,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const Text('Modal BottomSheet'),
+                    ElevatedButton(
+                      child: const Text('Close BottomSheet'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        )
+      },
     );
   }
 }

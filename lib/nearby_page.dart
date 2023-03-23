@@ -6,6 +6,7 @@ import 'package:floating_tabbar/Models/tab_item.dart';
 import 'package:floating_tabbar/floating_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_stories/flutter_stories.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:latlong2/latlong.dart';
@@ -34,6 +35,7 @@ class _NearbyState extends State<Nearby> {
   final _momentDuration = const Duration(seconds: 5);
   @override
   Widget build(BuildContext context) {
+    final promoList = ['Акции', 'Бонусы', 'Вакансии', 'Горячие туры'];
     final images = List.generate(
       _momentCount,
       (idx) => Container(color: Colors.green),
@@ -83,55 +85,47 @@ class _NearbyState extends State<Nearby> {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                child: Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.blue),
-                ),
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return Scaffold(
-                          body: Story(
-                            onFlashForward: Navigator.of(context).pop,
-                            onFlashBack: Navigator.of(context).pop,
-                            momentCount: 5,
-                            momentDurationGetter: (idx) => _momentDuration,
-                            momentBuilder: (context, idx) => images[idx],
-                          ),
-                        );
-                      });
-                },
-              ),
-              Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.yellow),
-              ),
-              Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.green),
-              ),
-              Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15), color: Colors.red),
-              )
-            ],
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
           ),
+          // child: Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     GestureDetector(
+          //       child: PromoStories(
+          //         promoListItem: promoList[0],
+          //         color: Colors.blue,
+          //       ),
+          //       onTap: () {
+          //         showDialog(
+          //             context: context,
+          //             builder: (context) {
+          //               return Scaffold(
+          //                 body: Story(
+          //                   onFlashForward: Navigator.of(context).pop,
+          //                   onFlashBack: Navigator.of(context).pop,
+          //                   momentCount: 5,
+          //                   momentDurationGetter: (idx) => _momentDuration,
+          //                   momentBuilder: (context, idx) => images[idx],
+          //                 ),
+          //               );
+          //             });
+          //       },
+          //     ),
+          //     PromoStories(
+          //       promoListItem: promoList[1],
+          //       color: Colors.yellow,
+          //     ),
+          //     PromoStories(
+          //       promoListItem: promoList[2],
+          //       color: Colors.green,
+          //     ),
+          //     PromoStories(
+          //       promoListItem: promoList[3],
+          //       color: Colors.red,
+          //     ),
+          //   ],
+          // ),
         ),
         NearbyPlace()
       ],
@@ -159,12 +153,40 @@ class _NearbyState extends State<Nearby> {
 
             return NearbyCard(
               name: place['name'],
-              location: km.toString(),
+              location: km.toString() + ' км',
               imagePath: place['cover'],
             );
           }),
         );
       },
+    );
+  }
+}
+
+class PromoStories extends StatelessWidget {
+  const PromoStories(
+      {super.key, required this.promoListItem, required this.color});
+
+  final String promoListItem;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 90,
+      width: 80,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: color,
+          border: Border.all(width: 2, color: Colors.transparent)),
+      child: Center(
+          child: Text(
+        promoListItem,
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontFamily: 'Arial Black'),
+      )),
     );
   }
 }
@@ -187,6 +209,12 @@ class NearbyCard extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute<void>(
           builder: (BuildContext context) {
             return Scaffold(
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerFloat,
+                floatingActionButton: FloatingActionButton.extended(
+                    onPressed: () {},
+                    label: Text(
+                        'Построить маршрут')), // This trailing comma makes auto-formatting nicer for build methods.
                 appBar: AppBar(
                   leading: IconButton(
                     icon: Icon(Icons.arrow_back),
@@ -200,61 +228,115 @@ class NearbyCard extends StatelessWidget {
                   title: Image.network(
                       'https://hubrelozpwhnirdykdqk.supabase.co/storage/v1/object/public/places/organisation_logo_01.png'),
                 ),
-                body: Column(
-                  children: [
-                    Card(
-                      margin: const EdgeInsets.all(10),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      elevation: 5,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                'https://hubrelozpwhnirdykdqk.supabase.co/storage/v1/object/public/places/organisation_banner.png'),
-                            fit: BoxFit.cover,
-                            alignment: Alignment.topCenter,
-                          ),
+                body: Column(children: [
+                  Card(
+                    margin: const EdgeInsets.all(10),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    elevation: 5,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              'https://hubrelozpwhnirdykdqk.supabase.co/storage/v1/object/public/places/organisation_banner.png'),
+                          fit: BoxFit.cover,
+                          alignment: Alignment.topCenter,
                         ),
-                        child: Container(
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                    colors: [
-                                  Color.fromRGBO(0, 0, 0, 0.5),
-                                  Colors.transparent
-                                ],
-                                    begin: Alignment.bottomCenter,
-                                    end: Alignment.topCenter)),
-                            height: 180,
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Wrap(
-                                children: [
-                                  Text(
-                                    'АКТИВНЫЙ СЕМЕЙНЫЙ И ЭКСТРЕМАЛЬНЫЙ ОТДЫХ В ЯКУТИИ \nСпортивно-развлекательный центр «Техтюр» \n\n— все для лучших условий вашего досуга.',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Montserrat'),
-                                  ),
-                                  ListTile(
-                                    title: Text('Галерея'),
-                                  ),
-                                  ListTile(
-                                    title: Text('Отзывы'),
-                                  ),
-                                  ListTile(
-                                    title: Text('О нас'),
-                                  ),
-                                ],
-                                //mainAxisAlignment: MainAxisAlignment.end,
-                                //crossAxisAlignment: CrossAxisAlignment.center,
-                              ),
-                            )),
                       ),
+                      child: Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [
+                                Color.fromRGBO(0, 0, 0, 0.5),
+                                Colors.transparent
+                              ],
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter)),
+                          height: 180,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'АКТИВНЫЙ СЕМЕЙНЫЙ И ЭКСТРЕМАЛЬНЫЙ ОТДЫХ В ЯКУТИИ \nСпортивно-развлекательный центр «Техтюр» \n\n— все для лучших условий вашего досуга.',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Montserrat'),
+                                ),
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                            ),
+                          )),
                     ),
-                  ],
-                ));
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(15),
+                      //       color: Colors.grey),
+                      //   child: Text('Лето'),
+                      // ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text('Лето'),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll<Color>(
+                                Colors.transparent)),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text('Зима'),
+                      ),
+                    ],
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.photo_album),
+                    title: Text('Галерея'),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.star_border_rounded),
+                    title: Text('Отзывы'),
+                    trailing: RatingBar.builder(
+                      itemSize: 16,
+                      initialRating: 4.5,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        print(rating);
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('О нас'),
+                    leading: Icon(Icons.info),
+                  ),
+                  ListTile(
+                    title: Text('Адрес'),
+                    leading: Icon(Icons.navigation),
+                    trailing: Text('Покровское шоссе 46 км, 1а'),
+                  ),
+                  ListTile(
+                    title: Text('Время работы'),
+                    leading: Icon(Icons.info),
+                    trailing: Text('Ежедневно 10:00-19:00'),
+                  ),
+                  ListTile(
+                    title: Text('Связаться:'),
+                    leading: Icon(Icons.info),
+                    trailing: Text('+ 7 (4112) 25-15-07'),
+                  ),
+                ]));
           },
         ))
       },

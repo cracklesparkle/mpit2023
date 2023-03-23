@@ -145,14 +145,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  equatable:
-    dependency: transitive
-    description:
-      name: equatable
-      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -318,14 +310,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
-  flutter_plugin_android_lifecycle:
-    dependency: transitive
+  flutter_rating_bar:
+    dependency: "direct main"
     description:
-      name: flutter_plugin_android_lifecycle
-      sha256: c224ac897bed083dabf11f238dd11a239809b446740be0c2044608c50029ffdf
+      name: flutter_rating_bar
+      sha256: d2af03469eac832c591a1eba47c91ecc871fe5708e69967073c043b2d775ed93
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.9"
+    version: "4.0.1"
   flutter_rating_stars:
     dependency: "direct main"
     description:
@@ -973,14 +965,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.2.2"
-  yandex_mapkit:
-    dependency: "direct main"
-    description:
-      name: yandex_mapkit
-      sha256: ab4054e41ad84b19192287c3d97060f1eef1cc81431bf6a8ae36e5b522b520a0
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.0"
   yet_another_json_isolate:
     dependency: transitive
     description:
