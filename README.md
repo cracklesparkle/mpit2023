@@ -1,16 +1,13 @@
-# mpit2023
+![image](https://user-images.githubusercontent.com/8038570/227081553-3e5710c6-71f8-4346-8e4b-e3195ff7f785.png)
 
-A new Flutter project.
+# ТУТиТАМ - турнавигатор
+Проект команды WEBM на МПИТ-2023.
 
-## Getting Started
+## Описание
+Мобильное приложение агрегатор досуговых активностей (например туры, маршруты, отдых) на Flutter.
 
-This project is a starting point for a Flutter application.
+## Стек
+Flutter + Firebase + Supabase
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Команда WEBM
+## МПИТ-2023
