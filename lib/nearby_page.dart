@@ -85,47 +85,44 @@ class _NearbyState extends State<Nearby> {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                child: PromoStories(
+                  promoListItem: promoList[0],
+                  color: Colors.blue,
+                ),
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Scaffold(
+                          body: Story(
+                            onFlashForward: Navigator.of(context).pop,
+                            onFlashBack: Navigator.of(context).pop,
+                            momentCount: 5,
+                            momentDurationGetter: (idx) => _momentDuration,
+                            momentBuilder: (context, idx) => images[idx],
+                          ),
+                        );
+                      });
+                },
+              ),
+              PromoStories(
+                promoListItem: promoList[1],
+                color: Colors.yellow,
+              ),
+              PromoStories(
+                promoListItem: promoList[2],
+                color: Colors.green,
+              ),
+              PromoStories(
+                promoListItem: promoList[3],
+                color: Colors.red,
+              ),
+            ],
           ),
-          // child: Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     GestureDetector(
-          //       child: PromoStories(
-          //         promoListItem: promoList[0],
-          //         color: Colors.blue,
-          //       ),
-          //       onTap: () {
-          //         showDialog(
-          //             context: context,
-          //             builder: (context) {
-          //               return Scaffold(
-          //                 body: Story(
-          //                   onFlashForward: Navigator.of(context).pop,
-          //                   onFlashBack: Navigator.of(context).pop,
-          //                   momentCount: 5,
-          //                   momentDurationGetter: (idx) => _momentDuration,
-          //                   momentBuilder: (context, idx) => images[idx],
-          //                 ),
-          //               );
-          //             });
-          //       },
-          //     ),
-          //     PromoStories(
-          //       promoListItem: promoList[1],
-          //       color: Colors.yellow,
-          //     ),
-          //     PromoStories(
-          //       promoListItem: promoList[2],
-          //       color: Colors.green,
-          //     ),
-          //     PromoStories(
-          //       promoListItem: promoList[3],
-          //       color: Colors.red,
-          //     ),
-          //   ],
-          // ),
         ),
         NearbyPlace()
       ],
@@ -274,23 +271,29 @@ class NearbyCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      // Container(
-                      //   decoration: BoxDecoration(
-                      //       borderRadius: BorderRadius.circular(15),
-                      //       color: Colors.grey),
-                      //   child: Text('Лето'),
-                      // ),
-                      ElevatedButton(
-                        onPressed: () {},
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.grey),
                         child: Text('Лето'),
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll<Color>(
-                                Colors.transparent)),
                       ),
-                      ElevatedButton(
-                        onPressed: () {},
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.grey),
                         child: Text('Зима'),
                       ),
+                      // ElevatedButton(
+                      //   onPressed: () {},
+                      //   child: Text('Лето'),
+                      //   style: ButtonStyle(
+                      //       backgroundColor: MaterialStatePropertyAll<Color>(
+                      //           Colors.transparent)),
+                      // ),
+                      // ElevatedButton(
+                      //   onPressed: () {},
+                      //   child: Text('Зима'),
+                      // ),
                     ],
                   ),
                   ListTile(

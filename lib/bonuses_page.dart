@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
@@ -11,6 +12,6 @@ class BonusesPage extends StatefulWidget {
 class _BonusesPageState extends State<BonusesPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Text('Бонусы');
   }
 }
